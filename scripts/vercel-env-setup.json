@@ -1,0 +1,118 @@
+{
+  "name": "Jobs2Go Platform Environment Variables",
+  "description": "Complete environment variable configuration for Jobs2Go platform",
+  "variables": [
+    {
+      "key": "NEXT_PUBLIC_APP_URL",
+      "value": "https://your-live-app-url.vercel.app",
+      "target": ["production", "preview"],
+      "type": "plain",
+      "description": "Public URL of your deployed application"
+    },
+    {
+      "key": "SCREENSHOT_DIR",
+      "value": "./synthetic-monitoring-results",
+      "target": ["production", "preview", "development"],
+      "type": "plain",
+      "description": "Directory for storing monitoring screenshots"
+    },
+    {
+      "key": "SYNTHETIC_HEADLESS",
+      "value": "true",
+      "target": ["production", "preview"],
+      "type": "plain",
+      "description": "Run synthetic tests in headless mode"
+    },
+    {
+      "key": "TEST_USER_EMAIL",
+      "value": "test-jobseeker@example.com",
+      "target": ["production", "preview", "development"],
+      "type": "plain",
+      "description": "Test job seeker email for synthetic monitoring"
+    },
+    {
+      "key": "TEST_USER_PASSWORD",
+      "value": "TestPassword123!",
+      "target": ["production", "preview", "development"],
+      "type": "secret",
+      "description": "Test job seeker password for synthetic monitoring"
+    },
+    {
+      "key": "TEST_EMPLOYER_EMAIL",
+      "value": "test-employer@example.com",
+      "target": ["production", "preview", "development"],
+      "type": "plain",
+      "description": "Test employer email for synthetic monitoring"
+    },
+    {
+      "key": "TEST_EMPLOYER_PASSWORD",
+      "value": "TestPassword123!",
+      "target": ["production", "preview", "development"],
+      "type": "secret",
+      "description": "Test employer password for synthetic monitoring"
+    },
+    {
+      "key": "TIMEOUT_NAVIGATION",
+      "value": "30000",
+      "target": ["production", "preview", "development"],
+      "type": "plain",
+      "description": "Navigation timeout in milliseconds"
+    },
+    {
+      "key": "TIMEOUT_ELEMENT",
+      "value": "10000",
+      "target": ["production", "preview", "development"],
+      "type": "plain",
+      "description": "Element wait timeout in milliseconds"
+    },
+    {
+      "key": "TIMEOUT_ACTION",
+      "value": "5000",
+      "target": ["production", "preview", "development"],
+      "type": "plain",
+      "description": "Action timeout in milliseconds"
+    },
+    {
+      "key": "TEST_RETRIES",
+      "value": "2",
+      "target": ["production", "preview", "development"],
+      "type": "plain",
+      "description": "Number of test retries on failure"
+    },
+    {
+      "key": "SCHEDULE_ENABLED",
+      "value": "true",
+      "target": ["production"],
+      "type": "plain",
+      "description": "Enable scheduled synthetic monitoring"
+    },
+    {
+      "key": "SCHEDULE_INTERVAL_MINUTES",
+      "value": "15",
+      "target": ["production"],
+      "type": "plain",
+      "description": "Interval between scheduled tests in minutes"
+    },
+    {
+      "key": "RETAIN_SCREENSHOTS",
+      "value": "false",
+      "target": ["production", "preview"],
+      "type": "plain",
+      "description": "Whether to retain monitoring screenshots"
+    },
+    {
+      "key": "SCREENSHOT_RETENTION_DAYS",
+      "value": "7",
+      "target": ["production", "preview"],
+      "type": "plain",
+      "description": "Number of days to retain screenshots"
+    },
+    {
+      "key": "SLACK_DEFAULT_CHANNEL",
+      "value": "#alerts",
+      "target": ["production", "preview"],
+      "type": "plain",
+      "description": "Default Slack channel for notifications"
+    }
+  ]
+}

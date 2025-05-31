@@ -1,0 +1,126 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Other models...
+
+// Audit categorization rule model
+model AuditCategorizationRule {
+  id                String   @id @default(cuid())
+  name              String
+  description       String?
+  priority          Int      @default(100) // Lower numbers = higher priority
+  isActive          Boolean  @default(true)
+  targetCategory    String   // The retention category to assign
+  conditions        Json     // JSON array of condition objects
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  createdBy         String?
+  lastEvaluated     DateTime?
+  matchCount        Int      @default(0)
+  ruleType          String   @default("STANDARD") // STANDARD, SYSTEM, CUSTOM
+
+  @@index([isActive])
+  @@index([priority])
+  @@index([targetCategory])
+  @@index([ruleType])
+}
+
+// Audit rule evaluation log
+model AuditRuleEvaluation {
+  id                String   @id @default(cuid())
+  ruleId            String
+  auditLogId        String
+  matched           Boolean
+  evaluatedAt       DateTime @default(now())
+  previousCategory  String?
+  newCategory       String?
+  evaluationDetails Json?
+
+  @@index([ruleId])
+  @@index([auditLogId])
+  @@index([matched])
+  @@index([evaluatedAt])
+}
+
+// Audit log model
+model AuditLog {
+  id                  String    @id @default(cuid())
+  action              String    // e.g., "tag.apply", "tag.remove", "permission.grant", "permission.revoke"
+  resourceType        String    // e.g., "tag", "template", "version", "permission"
+  resourceId          String
+  userId              String
+  userName            String?
+  userEmail           String?
+  details             Json      // Additional details about the action
+  ipAddress           String?
+  userAgent           String?
+  timestamp           DateTime  @default(now())
+  isArchived          Boolean   @default(false)
+  retentionCategory   String?
+  categorizedAt       DateTime?
+  categorizedBy       String?   // "RULE" or user ID
+  categorizedByRuleId String?
+  previousCategories  Json?     // History of category changes
+
+  @@index([action])
+  @@index([resourceType])
+  @@index([resourceId])
+  @@index([userId])
+  @@index([timestamp])
+  @@index([isArchived])
+  @@index([retentionCategory])
+  @@index([categorizedByRuleId])
+}
+
+// Audit retention policy model
+model AuditRetentionPolicy {
+  id                String   @id @default(cuid())
+  name              String   @unique
+  description       String?
+  retentionDays     Int
+  category          String   @unique // e.g., "security", "compliance", "operational"
+  archiveBeforeDelete Boolean @default(true)
+  archiveLocation   String?  // e.g., "s3", "local", "database"
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  lastRun           DateTime?
+  createdBy         String?
+
+  @@index([isActive])
+  @@index([category])
+}
+
+// Audit archive model
+model AuditArchive {
+  id                String   @id @default(cuid())
+  filename          String
+  startDate         DateTime
+  endDate           DateTime
+  recordCount       Int
+  fileSize          Int
+  storageLocation   String
+  storageReference  String
+  retentionCategory String
+  createdAt         DateTime @default(now())
+  expiresAt         DateTime?
+  isDeleted         Boolean  @default(false)
+  deletedAt         DateTime?
+
+  @@index([retentionCategory])
+  @@index([startDate])
+  @@index([endDate])
+  @@index([isDeleted])
+  @@index([expiresAt])
+}
+
+// Other models...
